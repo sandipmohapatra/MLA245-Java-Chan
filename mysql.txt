@@ -788,16 +788,16 @@ Durability: Ensures committed changes persist despite failures.
 ----------------------------------------------------------------------------------------------
 14th-Dec-2024
 ---------------------------
-mysql> create table bank(accno int primary key,name varchar(30) not null,balance int check (balance >=1000),address varchar(30) not null);
+mysql> create table bank(accno int primary key, name varchar(30) not null, balance int check (balance >=1000),address varchar(30) not null);
 
 mysql> create table transaction(accno int references bank(accno),deposite int,withdraw int);
 
 mysql> insert into bank values(101,'sandip',6000,'Bangalore');
 mysql> insert into bank values(102,'sunil',5000,'Bangalore');
-mysql> insert into transaction(accno,deposite) values(101,3000);
+mysql> insert into transaction(accno, deposite) values(101,3000);
 
-mysql> insert into transaction(accno,withdraw) values(101,1000);
-mysql> insert into transaction(accno,withdraw) values(102,1000);
+mysql> insert into transaction(accno, withdraw) values(101,1000);
+mysql> insert into transaction(accno, withdraw) values(102,1000);
 ----------------------------------------------------------------------------
 mysql> select * from bank;
 +-------+--------+---------+-----------+
@@ -816,8 +816,14 @@ mysql> select * from transaction;
 |   102 |     NULL |     1000 |
 +-------+----------+----------+
 
-mysql> select a.accno,a.name,a.balance,a.address,b.deposite,b.withdraw f
-rom bank a,transaction b where a.accno=b.accno;
+mysql> select a.accno,a.name,a.balance,a.address,b.deposite,b.withdraw from bank a,transaction b where a.accno=b.accno;
+----------------------------------------------------------------------------------
+
+SELECT bank.accno, bank.name,bank.balance,bank.address, transaction.deposite, transaction.withdraw FROM bank
+INNER JOIN transaction ON bank.accno = transaction.accno;
+
+---------------------------------------------------------------------------------------
+
 +-------+--------+---------+-----------+----------+----------+
 | accno | name   | balance | address   | deposite | withdraw |
 +-------+--------+---------+-----------+----------+----------+
