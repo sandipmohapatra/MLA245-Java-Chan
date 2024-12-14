@@ -85,9 +85,36 @@ flight_date VARCHAR(255),
 flight_number VARCHAR(255),
 origin VARCHAR(255), 
 status VARCHAR(255));
-
+-----------------------------------------------------------------------------------
 insert into booking_record(booking_date,destination,price,flight_date,flight_number,origin,status) values('2024-12-12 10:00','Pune','Rs 5000','12-dec-2024','air-206','Hyd','yes');
 ---------------------------------------------------------------------------------------
+Date
+---------------
+SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) AS ResultDate;
+SELECT DATE_ADD(CURDATE(), INTERVAL 5 DAY) AS ResultDate;
+SELECT STR_TO_DATE('12-13-2024', '%m-%d-%Y');
+SELECT MONTHNAME('2024-12-13');---->December
+SELECT DAYNAME('2024-12-13');----->Friday
+SELECT WEEK('2024-12-13');----->50
+SELECT LAST_DAY('2024-12-13'); -----> 2024-12-31
+SELECT DATEDIFF('2024-12-20', '2024-12-13');---->7
+SELECT DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s'); -->2024-12-13 14:30:00
+SELECT HOUR('14:30:00'); --> 14
+SELECT DAY('2024-12-13'); -->13
+SELECT MONTH('2024-12-13'); --> 12
+SELECT YEAR('2024-12-13'); --> 2024
+SELECT CURDATE(); -->2024-12-13
+SELECT CURTIME(); -->14:30:00
+SELECT NOW(); --> 2024-12-13 14:30:00
+-----------------------------------------------------------------------------------------------------
+create table orders(order_id int primary key,order_date date);
+insert into orders values(102,'2024-12-10');
+----------------------------------------------------------------------------------------------------
+SELECT order_id,order_date, 
+  DATE_ADD(order_date, INTERVAL 7 DAY) AS delivery_date, 
+  DAYNAME(order_date) AS order_day 
+FROM orders;
+-------------------------------------------------------------------
 CREATE TABLE Books (
     Book_Id INT PRIMARY KEY,
     Title VARCHAR(255) NOT NULL,
@@ -133,7 +160,7 @@ CREATE TABLE Borrowings (
     FOREIGN KEY (User_Id) REFERENCES Users(User_Id) ON DELETE CASCADE,
     FOREIGN KEY (Book_Id) REFERENCES Books(Book_Id) ON DELETE CASCADE
 );
--------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
 create table customers(CustomerID INT PRIMARY KEY AUTO_INCREMENT,
 CustomerName VARCHAR(255),	
 ContactName	VARCHAR(255),
@@ -141,11 +168,10 @@ Address VARCHAR(255),
 City	VARCHAR(255),
 PostalCode VARCHAR(255),
 Country VARCHAR(255));
-------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
 create table orders(OrderID INT PRIMARY KEY AUTO_INCREMENT,
 CustomerID int,EmployeeID int,OrderDate date,ShipperID int);
----------------------------------------------------------------------------------------------------------------------
-create table suppliers(SupplierID INT PRIMARY KEY AUTO_INCREMENT,
+-----------------------------------------------------------------------------------create table suppliers(SupplierID INT PRIMARY KEY AUTO_INCREMENT,
 	SupplierName VARCHAR(255),
 	ContactName	VARCHAR(255),
 	Address VARCHAR(255),
@@ -716,14 +742,17 @@ CREATE: Create databases, tables, indexes, views, etc.
 ALTER: Modify an existing database or table structure.
 DROP: Delete databases, tables, or other objects.
 TRUNCATE: Remove all rows from a table, resetting it.
+-------------------------------------------------------------------------
 Data Manipulation Language (DML):
 SELECT: Retrieve data from one or more tables.
 INSERT: Add new rows to a table.
 UPDATE: Modify existing rows in a table.
 DELETE: Remove rows from a table.
+---------------------------------------------------------------------------
 Data Control Language (DCL):
 GRANT: Give user access privileges.
 REVOKE: Remove user access privileges.
+----------------------------------------------------------------------
 Transaction Control Language (TCL):
 COMMIT: Save all changes to the database.
 ROLLBACK: Undo changes made in a transaction.
@@ -756,7 +785,61 @@ Atomicity: Ensures all operations in a transaction are completed or none are.
 Consistency: Ensures the database remains in a valid state.
 Isolation: Prevents concurrent transactions from interfering.
 Durability: Ensures committed changes persist despite failures.
--------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+14th-Dec-2024
+---------------------------
+mysql> create table bank(accno int primary key,name varchar(30) not null,balance int check (balance >=1000),address varchar(30) not null);
+
+mysql> create table transaction(accno int references bank(accno),deposite int,withdraw int);
+
+mysql> insert into bank values(101,'sandip',6000,'Bangalore');
+mysql> insert into bank values(102,'sunil',5000,'Bangalore');
+mysql> insert into transaction(accno,deposite) values(101,3000);
+
+mysql> insert into transaction(accno,withdraw) values(101,1000);
+mysql> insert into transaction(accno,withdraw) values(102,1000);
+----------------------------------------------------------------------------
+mysql> select * from bank;
++-------+--------+---------+-----------+
+| accno | name   | balance | address   |
++-------+--------+---------+-----------+
+|   101 | sandip |    6000 | Bangalore |
+|   102 | sunil  |    5000 | Bangalore |
++-------+--------+---------+-----------+
+
+mysql> select * from transaction;
++-------+----------+----------+
+| accno | deposite | withdraw |
++-------+----------+----------+
+|   101 |     3000 |     NULL |
+|   101 |     NULL |     1000 |
+|   102 |     NULL |     1000 |
++-------+----------+----------+
+
+mysql> select a.accno,a.name,a.balance,a.address,b.deposite,b.withdraw f
+rom bank a,transaction b where a.accno=b.accno;
++-------+--------+---------+-----------+----------+----------+
+| accno | name   | balance | address   | deposite | withdraw |
++-------+--------+---------+-----------+----------+----------+
+|   101 | sandip |    6000 | Bangalore |     3000 |     NULL |
+|   101 | sandip |    6000 | Bangalore |     NULL |     1000 |
+|   102 | sunil  |    5000 | Bangalore |     NULL |     1000 |
++-------+--------+---------+-----------+----------+----------+
+3rd Table
+---------------------------------
+create table loan(accno int references bank(accno),loan_type varchar(30),amount int);
+
+insert into loan values(101,'Car Loan',70000);
+------------------------------------------------------------------------------------
+select a.accno,a.name,a.balance,a.address,b.deposite,b.withdraw,c.loan_type,c.amount from bank a,transaction b,loan c where a.accno=b.accno and a.accno=c.accno;
++-------+--------+---------+-----------+----------+----------+-----------+---------+
+| accno | name   | balance | address   | deposite | withdraw | loan_type | amount |
++-------+--------+---------+-----------+----------+----------+-----------+---------+
+|   101 | sandip |    6000 | Bangalore |     3000 |     NULL | Car Loan  |   70000 |
+|   101 | sandip |    6000 | Bangalore |     NULL |     1000 | Car Loan  |   70000 |
+|   102 | sunil  |    5000 | Bangalore |     NULL |     1000 | home Loan |   90000 |
++-------+--------+---------+-----------+----------+----------+-----------+---------+
+
 
 ------------------------------End Of MySql-----------------------------------
 JDBC
