@@ -845,7 +845,42 @@ select a.accno,a.name,a.balance,a.address,b.deposite,b.withdraw,c.loan_type,c.am
 |   101 | sandip |    6000 | Bangalore |     NULL |     1000 | Car Loan  |   70000 |
 |   102 | sunil  |    5000 | Bangalore |     NULL |     1000 | home Loan |   90000 |
 +-------+--------+---------+-----------+----------+----------+-----------+---------+
+------------------------------
+ create table bank (accno int,name varchar(30),
+    -> address varchar(30),balance int);
 
+create table transaction(accno int,deposite int,withdraw
+    -> int);
+--------------------------------------------------------------------------------------------------
+when there is extra rows in the left table we will do right outer join.
+mysql> select a.*,b.* from bank a right join transaction b on a.accno=b.accno;
++-------+--------+-----------+---------+-------+----------+----------+
+| accno | name   | address   | balance | accno | deposite | withdraw |
++-------+--------+-----------+---------+-------+----------+----------+
+|   101 | sandip | bangalore |    6000 |   101 |     1000 |     NULL |
+|   102 | kiran  | bangalore |    7000 |   102 |     1000 |     NULL |
+|   103 | john   | bangalore |    9000 |   103 |     1000 |     NULL |
+|   104 | amit   | bangalore |    6000 |   104 |     NULL |     1000 |
+|   105 | sunil  | bangalore |    8000 |   105 |     NULL |     1000 |
+|  NULL | NULL   | NULL      |    NULL |   106 |    10000 |     NULL |
+|  NULL | NULL   | NULL      |    NULL |   107 |    10000 |     NULL |
++-------+--------+-----------+---------+-------+----------+----------+
+7 rows in set (0.00 sec)
+
+when there is extra rows in the right table we will do lef outer join.
+
+mysql> select a.*,b.* from bank a left join transaction b on a.accno=b.accno;
++-------+--------+-----------+---------+-------+----------+----------+
+| accno | name   | address   | balance | accno | deposite | withdraw |
++-------+--------+-----------+---------+-------+----------+----------+
+|   101 | sandip | bangalore |    6000 |   101 |     1000 |     NULL |
+|   102 | kiran  | bangalore |    7000 |   102 |     1000 |     NULL |
+|   103 | john   | bangalore |    9000 |   103 |     1000 |     NULL |
+|   104 | amit   | bangalore |    6000 |   104 |     NULL |     1000 |
+|   105 | sunil  | bangalore |    8000 |   105 |     NULL |     1000 |
++-------+--------+-----------+---------+-------+----------+----------+
+5 rows in set (0.00 sec)
+------------------------------------------------------------
 
 ------------------------------End Of MySql-----------------------------------
 JDBC
