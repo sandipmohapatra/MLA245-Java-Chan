@@ -852,7 +852,7 @@ select a.accno,a.name,a.balance,a.address,b.deposite,b.withdraw,c.loan_type,c.am
 create table transaction(accno int,deposite int,withdraw
     -> int);
 --------------------------------------------------------------------------------------------------
-when there is extra rows in the left table we will do right outer join.
+when there is extra rows in the right table we will do right outer join.
 mysql> select a.*,b.* from bank a right join transaction b on a.accno=b.accno;
 +-------+--------+-----------+---------+-------+----------+----------+
 | accno | name   | address   | balance | accno | deposite | withdraw |
@@ -867,7 +867,7 @@ mysql> select a.*,b.* from bank a right join transaction b on a.accno=b.accno;
 +-------+--------+-----------+---------+-------+----------+----------+
 7 rows in set (0.00 sec)
 
-when there is extra rows in the right table we will do lef outer join.
+when there is extra rows in the left table we will do left outer join.
 
 mysql> select a.*,b.* from bank a left join transaction b on a.accno=b.accno;
 +-------+--------+-----------+---------+-------+----------+----------+
