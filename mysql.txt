@@ -757,6 +757,8 @@ Transaction Control Language (TCL):
 COMMIT: Save all changes to the database.
 ROLLBACK: Undo changes made in a transaction.
 SAVEPOINT: Set a savepoint within a transaction for partial rollbacks.
+SET autocommit = 0;(auto commit turned off)
+SET autocommit = 1;(auto commit turned on)
 --------------------------------------------------------------------------------------------------
 6. Joins
 INNER JOIN: Returns rows with matching values in both tables.
@@ -903,7 +905,7 @@ JOIN
 ON 
     e.managerid = m.empid;
 
-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------
 ------------------------------End Of MySql-----------------------------------
 JDBC
 ---------------
