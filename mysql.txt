@@ -881,7 +881,29 @@ mysql> select a.*,b.* from bank a left join transaction b on a.accno=b.accno;
 +-------+--------+-----------+---------+-------+----------+----------+
 5 rows in set (0.00 sec)
 ------------------------------------------------------------
+self join :-A self join in MySQL is a technique where a table is joined with itself. This is useful when you need to compare rows within the same table. You essentially treat the table as if it were two separate tables, assigning each instance an alias to differentiate between them.
+-----------------------------------------------------------
+create table company (empid int, name varchar(30),managerid int);
+------------------------------------------------------------------------------------------
+mysql> insert into company values(101,'sandip',104);
+mysql> insert into company values(102,'kiran',104);
+mysql> insert into company values(103,'sunil',104);
+mysql> insert into company values(104,'amit',105);
+mysql> insert into company values(105,'nitu',106);
+---------------------------------------------------------------------------------------
+SELECT 
+    e.empid AS Employee,
+    e.name AS EmployeeName,
+    m.empid AS ManagerID,
+    m.name AS ManagerName
+FROM 
+    company AS e
+JOIN 
+    company AS m
+ON 
+    e.managerid = m.empid;
 
+----------------------------------------------------------------------------------------------------
 ------------------------------End Of MySql-----------------------------------
 JDBC
 ---------------
