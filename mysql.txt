@@ -1800,3 +1800,7 @@ d)select
 
 ans)with
 ----------------------------------------------------------------------------
+create table company1 as select * from company;
+select * from company1 union select * from company;
+select * from company1 intersect select * from company;
+ select * from company1 union all select * from company;
