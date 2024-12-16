@@ -1315,9 +1315,9 @@ mysql> select * from emp;
 | empid | name   | age  | salary |
 +-------+--------+------+--------+
 |   104 | madhu  |   25 |   4700 |
-|   103 | anil   |   35 |   7700 |
-|   102 | sandip |   35 |   8700 |
-|   101 | kiran  |   37 |   9700 |
+|   103 | anil   	 |   35 |   7700 |
+|   102 | sandip  |   35 |   8700 |
+|   101 | kiran    |   37 |   9700 |
 +-------+--------+------+--------+
 
 example:-
@@ -1329,6 +1329,16 @@ example:-
 
 3)DELETE FROM emp 
    WHERE AGE IN (SELECT AGE WHERE AGE >= 27 );
+
+4)SELECT name
+FROM emp
+WHERE salary = (SELECT MAX(salary) FROM emp);
+
+5)SELECT name,salary
+FROM emp
+WHERE empid IN (SELECT empid FROM emp WHERE name != 'amit');
+
+6)
 ------------------------------------------------------------------------------------
 Stored function in MYSql
 ----------------------------------------
