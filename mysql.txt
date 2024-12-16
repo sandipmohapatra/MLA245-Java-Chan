@@ -1252,7 +1252,7 @@ They are temporary.if we rollback it will come to the previous state.
 
 5)TCL (Transaction control language)  :- commit, rollback ,savepoint. 
 
------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 view 
 ----------
 A view is a logical table based on a table or another view.
@@ -1264,6 +1264,7 @@ we can create a view on another view.
 if you drop the base table or base view the corresponding view will be automatically deleted.
 view created on a single table is called simple view we can do DML operations.
 view created on a multiple tables is called complex view we cannot  do DML operations.
+---------------------------------------------------------------
 example:-
 CREATE VIEW abc AS SELECT customerid,customername,address,
 country FROM customer237;
@@ -1309,15 +1310,25 @@ subquery :-
 -----------------
 A subquery is a select statement that is embedded in a cluse of another select statement.
 
+mysql> select * from emp;
++-------+--------+------+--------+
+| empid | name   | age  | salary |
++-------+--------+------+--------+
+|   104 | madhu  |   25 |   4700 |
+|   103 | anil   |   35 |   7700 |
+|   102 | sandip |   35 |   8700 |
+|   101 | kiran  |   37 |   9700 |
++-------+--------+------+--------+
+
 example:-
 1) select ename from emp where sal>(select sal from emp where name='amit');
 
-2)UPDATE hystud4
-   SET SALARY = salary + SALARY * 0.25
-   WHERE AGE IN (SELECT AGE FROM hystud4 WHERE AGE >= 27 );
+2)UPDATE emp 
+   SET salary = salary + salary * 0.2
+   WHERE AGE IN (SELECT AGE  WHERE AGE >= 27 );
 
-3)DELETE FROM CUSTOMERS
-   WHERE AGE IN (SELECT AGE FROM CUSTOMERS WHERE AGE >= 27 );
+3)DELETE FROM emp 
+   WHERE AGE IN (SELECT AGE WHERE AGE >= 27 );
 ------------------------------------------------------------------------------------
 Stored function in MYSql
 ----------------------------------------
@@ -1333,6 +1344,7 @@ END
 $$ DELIMITER;
 ---------------------------------------------------------------
 SELECT avg_numbers(10,5,7) AS average;
+//
 -----------------------------------------------------------------
 DROP FUNCTION IF EXISTS add_numbers;
 -------------------------------------------------------------------
@@ -1626,7 +1638,7 @@ types of entity :- dependent or Independent.(true)
 -----------------------------------------------------
 sql server :-
 
-sql server supports :- database design,analysis and report.
+sql server supports :- database design, analysis and report.
 ------------------------------------------------------------------------
 components of sql server
 1)reporting
@@ -1803,4 +1815,12 @@ ans)with
 create table company1 as select * from company;
 select * from company1 union select * from company;
 select * from company1 intersect select * from company;
- select * from company1 union all select * from company;
+select * from company1 union all select * from company;
+-----------------------------------------------------------------------------
+
+
+
+
+
+
+
