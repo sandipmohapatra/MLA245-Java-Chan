@@ -1338,11 +1338,13 @@ WHERE salary = (SELECT MAX(salary) FROM emp);
 FROM emp
 WHERE empid IN (SELECT empid FROM emp WHERE name != 'amit');
 
-6)
+6)UPDATE emp
+SET salary = salary * 1.1
+WHERE empid = (SELECT empid WHERE name = 'amit');
 ------------------------------------------------------------------------------------
 Stored function in MYSql
 ----------------------------------------
-function -1
+function -1 It return's a value.
 ----------------------
 DELIMITER $$
 CREATE FUNCTION avg_numbers(a INT , b INT, c INT)
@@ -1426,6 +1428,78 @@ $$ DELIMITER;
 
 SELECT add_numbers1(10,5) AS SUM;
 ------------------------------------------------------------
+-------------------
+Procedure does not return  a value
+----------------------------
+DELIMITER :- allow the use of semicolons within the procedure body.
+procedure_name: Name of the procedure.
+IN, OUT, INOUT: Parameter modes. IN for input parameters, OUT for output parameters, and INOUT for both input and output.
+datatype: Data type of the parameters.
+procedure body: SQL statements that make up the procedure.
+------------------------------------------------------------------------------------------------
+example-1
+-------------------------------------------
+DELIMITER &&  
+CREATE PROCEDURE get_merit_student ()  
+BEGIN  
+    SELECT * FROM student_info WHERE marks > 70;  
+    END &&  
+DELIMITER ;  
+------------------------------------------------------------------------------------------------------------
+CREATE TABLE student_info(rollno INT,NAME VARCHAR(30),marks INT);
+INSERT INTO student_info VALUES(101,'Sandip',78);
+INSERT INTO student_info VALUES(102,'Kiran',72);
+INSERT INTO student_info VALUES(103,'Sunil',68);
+INSERT INTO student_info VALUES(104,'Madhu',88);
+INSERT INTO student_info VALUES(105,'Mohan',58);
+-------------------------------------------------------------------------------------------------------------
+CALL get_merit_student();
+--------------------------------------------------------------------------------------------------------------
+example-2
+-----------------
+DELIMITER &&  
+CREATE PROCEDURE get_student (IN var1 INT)  
+BEGIN  
+    SELECT * FROM student_info LIMIT var1;  
+   END &&  
+DELIMITER ;  
+
+----------------------------------------------------------------------------------
+CALL get_student(1);  
+* only one student's details will be seen
+-------------------------------------------------------------------------------------------
+example-3
+----------------------
+DELIMITER &&  
+CREATE PROCEDURE display_max_mark (OUT highestmark INT)  
+BEGIN  
+    SELECT MAX(marks) INTO highestmark FROM student_info;   
+END &&  
+DELIMITER ;  
+--------------------------------------------------------------------------------------------------
+
+CALL display_max_mark(@M);  
+------------------------------------------------------------------------------
+ SELECT @M as HighestMark;  
+-------------------------------------------------------------------------------
+example-4
+------------------
+DROP PROCEDURE display_marks
+---------------------------------------------------------------------------
+DELIMITER &&  
+CREATE PROCEDURE display_marks (INOUT var1 INT)  
+BEGIN  
+    SELECT marks INTO var1 FROM student_info WHERE rollno = var1;   
+END &&  
+DELIMITER ;  
+--------------------------------------------------------------------------------------------
+SET @M = 101;  
+--------------------------------------
+CALL display_marks(@M);  
+---------------------------------------
+SELECT @M; 
+-----------------------------------------------------------------------------------
+
 Correlated subqueries
 ------------------------------------------
 Correlated subqueries in MySQL are subqueries that depend on the outer query for their values. This means the subquery is executed once for each row processed by the outer query. 
@@ -1504,77 +1578,7 @@ Subquery: SELECT AVG(salary) FROM employees
 
 This subquery calculates the average salary of all employees.
 It is executed only once.
-----------------------------------------------------------------------------------------------------------------------
-Procedure 
-----------------------------
-DELIMITER :- allow the use of semicolons within the procedure body.
-procedure_name: Name of the procedure.
-IN, OUT, INOUT: Parameter modes. IN for input parameters, OUT for output parameters, and INOUT for both input and output.
-datatype: Data type of the parameters.
-procedure body: SQL statements that make up the procedure.
-------------------------------------------------------------------------------------------------
-example-1
--------------------------------------------
-DELIMITER &&  
-CREATE PROCEDURE get_merit_student ()  
-BEGIN  
-    SELECT * FROM student_info WHERE marks > 70;  
-    END &&  
-DELIMITER ;  
-------------------------------------------------------------------------------------------------------------
-CREATE TABLE student_info(rollno INT,NAME VARCHAR(30),marks INT);
-INSERT INTO student_info VALUES(101,'Sandip',78);
-INSERT INTO student_info VALUES(102,'Kiran',72);
-INSERT INTO student_info VALUES(103,'Sunil',68);
-INSERT INTO student_info VALUES(104,'Madhu',88);
-INSERT INTO student_info VALUES(105,'Mohan',58);
--------------------------------------------------------------------------------------------------------------
-CALL get_merit_student();
---------------------------------------------------------------------------------------------------------------
-example-2
------------------
-DELIMITER &&  
-CREATE PROCEDURE get_student (IN var1 INT)  
-BEGIN  
-    SELECT * FROM student_info LIMIT var1;  
-   END &&  
-DELIMITER ;  
-
-----------------------------------------------------------------------------------
-CALL get_student(1);  
-* only one student's details will be seen
--------------------------------------------------------------------------------------------
-example-3
-----------------------
-DELIMITER &&  
-CREATE PROCEDURE display_max_mark (OUT highestmark INT)  
-BEGIN  
-    SELECT MAX(marks) INTO highestmark FROM student_info;   
-END &&  
-DELIMITER ;  
---------------------------------------------------------------------------------------------------
-
-CALL display_max_mark(@M);  
-------------------------------------------------------------------------------
- SELECT @M;  
--------------------------------------------------------------------------------
-example-4
-------------------
-DROP PROCEDURE display_marks
----------------------------------------------------------------------------
-DELIMITER &&  
-CREATE PROCEDURE display_marks (INOUT var1 INT)  
-BEGIN  
-    SELECT marks INTO var1 FROM student_info WHERE rollno = var1;   
-END &&  
-DELIMITER ;  
---------------------------------------------------------------------------------------------
-SET @M = 101;  
---------------------------------------
-CALL display_marks(@M);  
----------------------------------------
-SELECT @M; 
------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 Class Test MCQs
 -------------------------------------------------------------------------------------------------
 
